@@ -1,0 +1,7 @@
+name: Authority
+version: 1.0
+main: authority.Main
+
+commands:
+  access:
+    aliases: [acs]
