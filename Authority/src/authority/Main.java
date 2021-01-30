@@ -50,32 +50,32 @@ public class Main extends JavaPlugin implements Listener {
                     if (found(permissions, args[4])) {
                         if (!found(myPermissions, args[4])) {
                             myPermissions.add(args[4]);
-                            sender.sendMessage("[" + args[1] + "]ì— ìˆëŠ” [" + args[2] + "]ì—ê²Œ [" + args[4] + "] ê¶Œí•œì„ ì¶”ê°€ í–ˆìŠµë‹ˆë‹¤");
+                            sender.sendMessage("[" + args[1] + "]¿¡ ÀÖ´Â [" + args[2] + "]¿¡°Ô [" + args[4] + "] ±ÇÇÑÀ» Ãß°¡ Çß½À´Ï´Ù");
                         }
                         else {
-                            sender.sendMessage(ChatColor.YELLOW + "[" + args[2] + "]ëŠ” ì´ë¯¸ [" + args[4] + "] ê¶Œí•œì„ ê°€ì§€ê³  ìˆìŠµë‹ˆë‹¤");
+                            sender.sendMessage(ChatColor.YELLOW + "[" + args[2] + "]´Â ÀÌ¹Ì [" + args[4] + "] ±ÇÇÑÀ» °¡Áö°í ÀÖ½À´Ï´Ù");
                         }
                     }
                     else {
-                        sender.sendMessage(ChatColor.RED + "[" + args[4] + "] ê¶Œí•œì€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤");
+                        sender.sendMessage(ChatColor.RED + "[" + args[4] + "] ±ÇÇÑÀº Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù");
                     }
                 }
                 else if (args[3].equalsIgnoreCase("remove")) {
                     if (found(permissions, args[4])) {
                         if (found(myPermissions, args[4])) {
                             myPermissions.remove(args[4]);
-                            sender.sendMessage("[" + args[1] + "]ì— ìˆëŠ” [" + args[2] + "]ì—ê²Œ [" + args[4] + "] ê¶Œí•œì„ ì œê±° í–ˆìŠµë‹ˆë‹¤");
+                            sender.sendMessage("[" + args[1] + "]¿¡ ÀÖ´Â [" + args[2] + "]¿¡°Ô [" + args[4] + "] ±ÇÇÑÀ» Á¦°Å Çß½À´Ï´Ù");
                         }
                         else {
-                            sender.sendMessage(ChatColor.YELLOW + "[" + args[2] + "]ëŠ” [" + args[4] + "] ê¶Œí•œì´ ì—†ìŠµë‹ˆë‹¤");
+                            sender.sendMessage(ChatColor.YELLOW + "[" + args[2] + "]´Â [" + args[4] + "] ±ÇÇÑÀÌ ¾ø½À´Ï´Ù");
                         }
                     }
                     else {
-                        sender.sendMessage(ChatColor.RED + "[" + args[4] + "] ê¶Œí•œì€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤");
+                        sender.sendMessage(ChatColor.RED + "[" + args[4] + "] ±ÇÇÑÀº Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù");
                     }
                 }
                 else {
-                    sender.sendMessage("ì¡´ì¬ í•˜ì§€ ì•ŠëŠ” argument ì…ë‹ˆë‹¤");
+                    sender.sendMessage("Á¸Àç ÇÏÁö ¾Ê´Â argument ÀÔ´Ï´Ù");
                 }
             }
             else if (args[0].equalsIgnoreCase("show")) {
@@ -104,7 +104,21 @@ public class Main extends JavaPlugin implements Listener {
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
         if (command.getName().equalsIgnoreCase("access")) {
-            if (args.length == 1) {
+        	if (args.length == 1) {
+        		List<String> mode = new ArrayList<>();
+        		mode.add("modify");
+        		mode.add("show");
+        		
+        		List<String> result = new ArrayList<>();
+                for (String a : mode) {
+                    if (a.toLowerCase().startsWith(args[0].toLowerCase())) {
+                        result.add(a);
+                    }
+                }
+
+                return result;
+        	}
+            if (args.length == 2) {
                 List<String> worldTypes = new ArrayList<>();
                 worldTypes.add("world:overworld");
                 worldTypes.add("world:nether");
@@ -119,7 +133,7 @@ public class Main extends JavaPlugin implements Listener {
 
                 return result;
             }
-            if (args.length == 2) {
+            if (args.length == 3) {
                 List<String> targets = new ArrayList<>();
                 Player[] players = new Player[Bukkit.getServer().getOnlinePlayers().size()];
                 Bukkit.getServer().getOnlinePlayers().toArray(players);
@@ -134,21 +148,7 @@ public class Main extends JavaPlugin implements Listener {
 
                 List<String> result = new ArrayList<>();
                 for (String a : targets) {
-                    if (a.toLowerCase().startsWith(args[1].toLowerCase())) {
-                        result.add(a);
-                    }
-                }
-
-                return result;
-            }
-            if (args.length == 3) {
-                List<String> mode = new ArrayList<>();
-                mode.add("add");
-                mode.add("remove");
-
-                List<String> result = new ArrayList<>();
-                for (String a : mode) {
-                    if (a.toLowerCase().startsWith(args[1].toLowerCase())) {
+                    if (a.toLowerCase().startsWith(args[2].toLowerCase())) {
                         result.add(a);
                     }
                 }
@@ -156,6 +156,20 @@ public class Main extends JavaPlugin implements Listener {
                 return result;
             }
             if (args.length == 4) {
+                List<String> mode = new ArrayList<>();
+                mode.add("add");
+                mode.add("remove");
+
+                List<String> result = new ArrayList<>();
+                for (String a : mode) {
+                    if (a.toLowerCase().startsWith(args[3].toLowerCase())) {
+                        result.add(a);
+                    }
+                }
+
+                return result;
+            }
+            if (args.length == 5) {
                 List<String> accessTypes = new ArrayList<>();
                 accessTypes.add("everything");
                 accessTypes.add("enter");
@@ -173,7 +187,7 @@ public class Main extends JavaPlugin implements Listener {
 
                 List<String> result = new ArrayList<>();
                 for (String a : accessTypes) {
-                    if (a.toLowerCase().startsWith(args[1].toLowerCase())) {
+                    if (a.toLowerCase().startsWith(args[4].toLowerCase())) {
                         result.add(a);
                     }
                 }
