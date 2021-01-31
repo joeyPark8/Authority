@@ -16,16 +16,25 @@ import org.bukkit.event.entity.EntityToggleSwimEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class Main extends JavaPlugin implements Listener {
     List<String> myPermissions = new ArrayList<>();
     List<String> permissions = new ArrayList<>(Arrays.asList("everything", "enter", "exit",
-                                                             "setBlock", "breakBlock", "dropItem",
-                                                             "getItem", "shoot", "explode",
-                                                             "interact", "fly", "swim", "run"));
+            "setBlock", "breakBlock", "dropItem",
+            "getItem", "shoot", "explode",
+            "interact", "fly", "swim", "run"));
+
+    HashMap<String, String> descrip = new HashMap<>(Map.of("everything", "ëª¨ë“  ê¶Œí•œ",
+                                                           "enter", "ë“¤ì–´ê°€ê¸°",
+                                                           "exit", "ë‚˜ê°€ê¸°",
+                                                           "setBlock", "ë¸”ëŸ­ ì„¤ì¹˜í•˜ê¸°",
+                                                           "breakBlock", "ë¸”ëŸ­ ë¶€ìˆ˜ê¸°",
+                                                           "dropItem", "ì•„ì´í…œ ë²„ë¦¬ê¸°",
+                                                           "getItem", "ì•„ì´í…œ ì¤ê¸°",
+                                                           "shoot", "ë°œì‚¬ì²´ ì˜ê¸°",
+                                                           "explode", "í­ë°œì‹œí‚¤ê¸°",
+                                                          "interact", "ìƒí˜¸ì‘ìš© í•˜ê¸°"));
 
     @Override
     public void onEnable() {
@@ -35,6 +44,7 @@ public class Main extends JavaPlugin implements Listener {
         getCommand("access").setTabCompleter(this::onTabComplete);
 
         Bukkit.getPluginManager().registerEvents(this, this);
+
     }
 
     @Override
@@ -50,43 +60,64 @@ public class Main extends JavaPlugin implements Listener {
                     if (found(permissions, args[4])) {
                         if (!found(myPermissions, args[4])) {
                             myPermissions.add(args[4]);
-                            sender.sendMessage("[" + args[1] + "]¿¡ ÀÖ´Â [" + args[2] + "]¿¡°Ô [" + args[4] + "] ±ÇÇÑÀ» Ãß°¡ Çß½À´Ï´Ù");
+                            sender.sendMessage("[" + args[1] + "]ì— ìˆëŠ” [" + args[2] + "]ì—ê²Œ [" + args[4] + "] ê¶Œí•œì„ ì¶”ê°€ í–ˆìŠµë‹ˆë‹¤");
+                            return false;
                         }
                         else {
-                            sender.sendMessage(ChatColor.YELLOW + "[" + args[2] + "]´Â ÀÌ¹Ì [" + args[4] + "] ±ÇÇÑÀ» °¡Áö°í ÀÖ½À´Ï´Ù");
+                            sender.sendMessage(ChatColor.YELLOW + "[" + args[2] + "]ëŠ” ì´ë¯¸ [" + args[4] + "] ê¶Œí•œì„ ê°€ì§€ê³  ìˆìŠµë‹ˆë‹¤");
+                            return false;
                         }
                     }
                     else {
-                        sender.sendMessage(ChatColor.RED + "[" + args[4] + "] ±ÇÇÑÀº Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù");
+                        sender.sendMessage(ChatColor.RED + "[" + args[4] + "] ê¶Œí•œì€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤");
+                        return false;
                     }
                 }
                 else if (args[3].equalsIgnoreCase("remove")) {
                     if (found(permissions, args[4])) {
                         if (found(myPermissions, args[4])) {
                             myPermissions.remove(args[4]);
-                            sender.sendMessage("[" + args[1] + "]¿¡ ÀÖ´Â [" + args[2] + "]¿¡°Ô [" + args[4] + "] ±ÇÇÑÀ» Á¦°Å Çß½À´Ï´Ù");
+                            sender.sendMessage("[" + args[1] + "]ì— ìˆëŠ” [" + args[2] + "]ì—ê²Œ [" + args[4] + "] ê¶Œí•œì„ ì œê±° í–ˆìŠµë‹ˆë‹¤");
+                            return false;
                         }
                         else {
-                            sender.sendMessage(ChatColor.YELLOW + "[" + args[2] + "]´Â [" + args[4] + "] ±ÇÇÑÀÌ ¾ø½À´Ï´Ù");
+                            sender.sendMessage(ChatColor.YELLOW + "[" + args[2] + "]ëŠ” [" + args[4] + "] ê¶Œí•œì´ ì—†ìŠµë‹ˆë‹¤");
+                            return false;
                         }
                     }
                     else {
-                        sender.sendMessage(ChatColor.RED + "[" + args[4] + "] ±ÇÇÑÀº Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù");
+                        sender.sendMessage(ChatColor.RED + "[" + args[4] + "] ê¶Œí•œì€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤");
+                        return false;
                     }
                 }
                 else {
-                    sender.sendMessage("Á¸Àç ÇÏÁö ¾Ê´Â argument ÀÔ´Ï´Ù");
+                    sender.sendMessage("ì¡´ì¬ í•˜ì§€ ì•ŠëŠ” argument ì…ë‹ˆë‹¤");
+                    return false;
                 }
             }
             else if (args[0].equalsIgnoreCase("show")) {
+                if (args[1].equalsIgnoreCase("@local")) {
+                    sender.sendMessage("[" + args[1] + "]ì´ ê°€ì§€ê³  ìˆëŠ” ê¶Œí•œë“¤");
+                    for (String i : myPermissions) {
+                        sender.sendMessage(i + " : " + descrip.get(i));
+                    }
+                    return false;
+                }
+                else if (args[1].equalsIgnoreCase("@random")) {
+                    return false;
+                }
+
 
             }
             else {
-
+                return false;
             }
         }
+        else if (command.getName().equalsIgnoreCase("protect")) {
+            return false;
+        }
         else {
-
+            return false;
         }
         return true;
     }
@@ -104,12 +135,12 @@ public class Main extends JavaPlugin implements Listener {
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
         if (command.getName().equalsIgnoreCase("access")) {
-        	if (args.length == 1) {
-        		List<String> mode = new ArrayList<>();
-        		mode.add("modify");
-        		mode.add("show");
-        		
-        		List<String> result = new ArrayList<>();
+            if (args.length == 1) {
+                List<String> mode = new ArrayList<>();
+                mode.add("modify");
+                mode.add("show");
+
+                List<String> result = new ArrayList<>();
                 for (String a : mode) {
                     if (a.toLowerCase().startsWith(args[0].toLowerCase())) {
                         result.add(a);
@@ -117,7 +148,7 @@ public class Main extends JavaPlugin implements Listener {
                 }
 
                 return result;
-        	}
+            }
             if (args.length == 2) {
                 List<String> worldTypes = new ArrayList<>();
                 worldTypes.add("world:overworld");
@@ -199,38 +230,29 @@ public class Main extends JavaPlugin implements Listener {
     }
 
     @EventHandler
-    public void onMove(PlayerMoveEvent e) {
-        Player player = e.getPlayer();
-
-        if (!found(myPermissions, "enter")) {
-
-        }
-    }
-
-    @EventHandler
     public void onBlockPlace(BlockPlaceEvent e) {
-        if (!found(myPermissions, "setBlock")) {
+        if (!e.getPlayer().isOp() && !found(myPermissions, "setBlock")) {
             e.setCancelled(true);
         }
     }
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent e) {
-        if (!found(myPermissions, "breakBlock")) {
+        if (!e.getPlayer().isOp() && !found(myPermissions, "breakBlock")) {
             e.setCancelled(true);
         }
     }
 
     @EventHandler
     public void onPlayerDropItem(PlayerDropItemEvent e) {
-        if (!found(myPermissions, "dropItem")) {
+        if (!e.getPlayer().isOp() && !found(myPermissions, "dropItem")) {
             e.setCancelled(true);
         }
     }
 
     @EventHandler
     public void onPlayerPickupItem(PlayerPickupItemEvent e) {
-        if (!found(myPermissions, "getItem")) {
+        if (!e.getPlayer().isOp() && !found(myPermissions, "getItem")) {
             e.setCancelled(true);
         }
     }
@@ -238,7 +260,7 @@ public class Main extends JavaPlugin implements Listener {
     @EventHandler
     public void onEntityShootBow(EntityShootBowEvent e) {
         if (e.getEntityType() == EntityType.PLAYER) {
-            if (!found(myPermissions, "shoot")) {
+            if (!e.getEntity().isOp() && !found(myPermissions, "shoot")) {
                 e.setCancelled(true);
             }
         }
@@ -247,7 +269,7 @@ public class Main extends JavaPlugin implements Listener {
     @EventHandler
     public void onEntityExplode(EntityExplodeEvent e) {
         if (e.getEntityType() == EntityType.PRIMED_TNT) {
-            if (!found(myPermissions, "explode")) {
+            if (!e.getEntity().isOp() && !found(myPermissions, "explode")) {
                 e.setCancelled(true);
             }
         }
@@ -255,21 +277,21 @@ public class Main extends JavaPlugin implements Listener {
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent e) {
-        if (!found(myPermissions, "interact")) {
+        if (!e.getPlayer().isOp() && !found(myPermissions, "interact")) {
             e.setCancelled(true);
         }
     }
 
     @EventHandler
     public void onPlayerRun(PlayerToggleSprintEvent e) {
-        if (!found(myPermissions, "run")) {
+        if (!e.getPlayer().isOp() && !found(myPermissions, "run")) {
             e.setCancelled(true);
         }
     }
 
     @EventHandler
     public void onPlayerFly(PlayerToggleFlightEvent e) {
-        if (!found(myPermissions, "fly")) {
+        if (!e.getPlayer().isOp() && !found(myPermissions, "fly")) {
             e.setCancelled(true);
         }
     }
@@ -277,7 +299,7 @@ public class Main extends JavaPlugin implements Listener {
     @EventHandler
     public void onEntitySwim(EntityToggleSwimEvent e) {
         if (e.getEntityType() == EntityType.PLAYER) {
-            if (!found(myPermissions, "swim")) {
+            if (e.getEntity().isOp() && !found(myPermissions, "swim")) {
                 e.setCancelled(true);
             }
         }

@@ -5,3 +5,5 @@ main: authority.Main
 commands:
   access:
     aliases: [acs]
+  protect:
+    aliases: [pt]
